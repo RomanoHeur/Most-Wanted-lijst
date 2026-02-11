@@ -6,7 +6,7 @@
 
     <groupId>nl.ad</groupId>
     <artifactId>Most-Wanted-Lijst</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <name>Most-Wanted-Lijst</name>
 
     <properties>
@@ -18,11 +18,6 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>21.0.6</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
             <version>21.0.6</version>
         </dependency>
 
@@ -60,7 +55,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>nl.ad.mostwantedlijst/nl.ad.mostwantedlijst.HelloApplication</mainClass>
+                            <mainClass>nl.ad.mostwantedlijst/nl.ad.mostwantedlijst.Application</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
