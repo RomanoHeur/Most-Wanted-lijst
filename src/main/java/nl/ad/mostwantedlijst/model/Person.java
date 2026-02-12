@@ -7,6 +7,7 @@ public abstract class Person {
     private int id;
     private String firstname;
     private String surname;
+    private String lastname;
     private LocalDate dateOfBirth;
     private String gender;
     private String nationality;
@@ -14,19 +15,21 @@ public abstract class Person {
 
     public Person() { }
 
-    public Person(int id, String firstname, String surname, LocalDate dateOfBirth, String gender, String nationality, String description) {
+    public Person(int id, String firstname, String surname, String lastname , LocalDate dateOfBirth, String gender, String nationality, String description) {
         this.id = id;
         this.firstname = firstname;
         this.surname = surname;
+        this.lastname = lastname;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
         this.nationality = nationality;
         this.description = description;
     }
 
-    public Person(String firstname, String surname, LocalDate dateOfBirth, String gender, String nationality, String description) {
+    public Person(String firstname, String surname, String lastname, LocalDate dateOfBirth, String gender, String nationality, String description) {
         this.firstname = firstname;
         this.surname = surname;
+        this.lastname = lastname;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
         this.nationality = nationality;
@@ -55,6 +58,14 @@ public abstract class Person {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public LocalDate getDateOfBirth() {
@@ -95,6 +106,7 @@ public abstract class Person {
                 "id=" + id +
                 ", firstname='" + firstname + '\'' +
                 ", surname='" + surname + '\'' +
+                ", lastname='" + lastname + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", gender='" + gender + '\'' +
                 ", nationality='" + nationality + '\'' +
