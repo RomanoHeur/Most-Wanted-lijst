@@ -16,7 +16,7 @@ public class DatabaseProviderService {
     // Private constructor zodat er geen instanties buiten deze klasse aangemaakt kan worden.
     private DatabaseProviderService() { }
 
-    private static Connection getConnection() {
+    public static Connection getConnection() {
         try {
             return DriverManager.getConnection(
                     DATABASE_URL,

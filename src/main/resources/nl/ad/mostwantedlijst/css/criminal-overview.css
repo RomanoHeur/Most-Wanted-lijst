@@ -1,0 +1,22 @@
+/* Header */
+.header {
+    -fx-background-color: #000000;
+}
+
+.application-title {
+    -fx-font-weight: bold;
+    -fx-font-size: 22;
+    -fx-text-fill: #FFFFFF;
+}
+
+.application-subTitle {
+    -fx-font-size: 16;
+    -fx-text-fill: #A1A1A1;
+}
+
+.login-button {
+    -fx-background-color: #F08000;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 16;
+    -fx-border: none;
+}
