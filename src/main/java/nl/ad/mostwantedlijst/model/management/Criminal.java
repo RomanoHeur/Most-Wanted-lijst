@@ -1,6 +1,7 @@
-package nl.ad.mostwantedlijst.model;
+package nl.ad.mostwantedlijst.model.management;
 
-import java.time.LocalDate;
+import nl.ad.mostwantedlijst.model.report.Report;
+
 import java.util.ArrayList;
 import java.util.List;
 

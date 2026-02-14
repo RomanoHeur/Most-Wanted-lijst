@@ -1,4 +1,6 @@
-package nl.ad.mostwantedlijst.model;
+package nl.ad.mostwantedlijst.model.report;
+
+import nl.ad.mostwantedlijst.model.management.Criminal;
 
 import java.time.LocalDate;
 

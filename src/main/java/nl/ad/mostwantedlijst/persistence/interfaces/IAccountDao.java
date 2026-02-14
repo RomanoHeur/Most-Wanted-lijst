@@ -1,6 +1,6 @@
 package nl.ad.mostwantedlijst.persistence.interfaces;
 
-import nl.ad.mostwantedlijst.model.Account;
+import nl.ad.mostwantedlijst.model.security.Account;
 
 import java.util.Optional;
 

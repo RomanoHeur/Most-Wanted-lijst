@@ -1,4 +1,4 @@
-package nl.ad.mostwantedlijst.model;
+package nl.ad.mostwantedlijst.model.management;
 
 import java.time.LocalDate;
 

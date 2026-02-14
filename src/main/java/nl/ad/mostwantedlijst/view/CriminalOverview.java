@@ -59,16 +59,17 @@ public class CriminalOverview extends BorderPane {
         loginButton.setPadding(new Insets(6, 20, 6, 20));
         HBox.setMargin(loginButton, new Insets(10, 40, 0, 0)); // Zorgt ervoor dat er afstand zit tussen de header.
 
+        // Actie op de Login button om naar de login pagina te gaan.
         loginButton.setOnMouseClicked(_ -> {
             LoginView loginView = new LoginView();
             Application.setStage(loginView);
         });
 
-
         // Afstand tussen button en titelbox.
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
+        // Alles toevoegen aan de header.
         header.getChildren().addAll(logo, titleBox, spacer, loginButton);
 
         return header;

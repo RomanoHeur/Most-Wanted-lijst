@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS most_wanted_lijst;
 CREATE DATABASE most_wanted_lijst;
 USE most_wanted_lijst;
 
@@ -53,3 +54,6 @@ ON crime (criminal_id);
 
 CREATE INDEX idx_report_date
 ON report (date);
+
+INSERT INTO account (username, password)
+VALUES ('admin', 'admin123');

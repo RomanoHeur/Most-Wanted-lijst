@@ -1,6 +1,6 @@
 package nl.ad.mostwantedlijst.persistence.dao;
 
-import nl.ad.mostwantedlijst.model.Account;
+import nl.ad.mostwantedlijst.model.security.Account;
 import nl.ad.mostwantedlijst.persistence.interfaces.IAccountDao;
 import nl.ad.mostwantedlijst.service.DatabaseProviderService;
 

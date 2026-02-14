@@ -1,4 +1,4 @@
-package nl.ad.mostwantedlijst.model;
+package nl.ad.mostwantedlijst.model.security;
 
 public class Account {
 
