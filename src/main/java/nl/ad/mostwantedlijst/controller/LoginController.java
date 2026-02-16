@@ -3,6 +3,7 @@ package nl.ad.mostwantedlijst.controller;
 import nl.ad.mostwantedlijst.model.security.Account;
 import nl.ad.mostwantedlijst.model.type.LoginResult;
 import nl.ad.mostwantedlijst.persistence.dao.AccountDao;
+import nl.ad.mostwantedlijst.persistence.dummydao.DummyAccountDao;
 import nl.ad.mostwantedlijst.persistence.interfaces.IAccountDao;
 
 import java.util.Optional;
@@ -15,8 +16,8 @@ public class LoginController {
     private final IAccountDao accountDao;
 
     // Hier wordt de DAO geinitialiseerd.
-    public LoginController() {
-        this.accountDao = new AccountDao();
+    public LoginController(IAccountDao accountDao) {
+        this.accountDao = accountDao;
     }
 
     public LoginResult login(String username, String password) {

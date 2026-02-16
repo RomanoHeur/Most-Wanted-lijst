@@ -11,6 +11,7 @@ import javafx.scene.layout.*;
 import nl.ad.mostwantedlijst.Application;
 import nl.ad.mostwantedlijst.controller.LoginController;
 import nl.ad.mostwantedlijst.model.type.LoginResult;
+import nl.ad.mostwantedlijst.persistence.dao.AccountDao;
 
 /**
  * View voor de inlog pagina voor een admin.
@@ -116,7 +117,7 @@ public class LoginView extends StackPane {
         // Actie toevoegen aan de login button
         loginButton.setOnAction(_ -> {
 
-            LoginController loginController = new LoginController();
+            LoginController loginController = new LoginController(new AccountDao());
 
             LoginResult loginResult = loginController.login(
                     usernameField.getText(),
