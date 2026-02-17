@@ -2,6 +2,7 @@ package nl.ad.mostwantedlijst.model.management;
 
 import nl.ad.mostwantedlijst.model.report.Report;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,13 @@ public class Criminal extends Person {
     private List<Report> reports = new ArrayList<>();
 
     public Criminal() { }
+
+    public Criminal(String firstname, String surname, String lastname, LocalDate dateOfBirth, String gender, String nationality, CriminalStatus criminalStatus, String notes, String imageLink) {
+        super(firstname, surname, lastname, dateOfBirth, gender, nationality);
+        this.criminalStatus = criminalStatus;
+        this.notes = notes;
+        this.imageLink = imageLink;
+    }
 
     public CriminalStatus getCriminalStatus() {
         return criminalStatus;

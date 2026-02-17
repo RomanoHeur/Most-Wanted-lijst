@@ -11,11 +11,10 @@ public abstract class Person {
     private LocalDate dateOfBirth;
     private String gender;
     private String nationality;
-    private String description;
 
     public Person() { }
 
-    public Person(int id, String firstname, String surname, String lastname , LocalDate dateOfBirth, String gender, String nationality, String description) {
+    public Person(int id, String firstname, String surname, String lastname , LocalDate dateOfBirth, String gender, String nationality) {
         this.id = id;
         this.firstname = firstname;
         this.surname = surname;
@@ -23,17 +22,15 @@ public abstract class Person {
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
         this.nationality = nationality;
-        this.description = description;
     }
 
-    public Person(String firstname, String surname, String lastname, LocalDate dateOfBirth, String gender, String nationality, String description) {
+    public Person(String firstname, String surname, String lastname, LocalDate dateOfBirth, String gender, String nationality) {
         this.firstname = firstname;
         this.surname = surname;
         this.lastname = lastname;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
         this.nationality = nationality;
-        this.description = description;
     }
 
     public int getId() {
@@ -92,14 +89,6 @@ public abstract class Person {
         this.nationality = nationality;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     @Override
     public String toString() {
         return "Person{" +
@@ -110,7 +99,6 @@ public abstract class Person {
                 ", dateOfBirth=" + dateOfBirth +
                 ", gender='" + gender + '\'' +
                 ", nationality='" + nationality + '\'' +
-                ", description='" + description + '\'' +
                 '}';
     }
 

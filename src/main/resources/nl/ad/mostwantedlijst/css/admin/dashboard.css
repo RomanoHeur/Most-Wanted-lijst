@@ -1,0 +1,82 @@
+/* Header */
+.header {
+    -fx-background-color: #0F172B;
+}
+
+.back-button {
+    -fx-background-color: none;
+    -fx-border-color: none;
+    -fx-font-size: 14;
+    -fx-text-fill: #FFFFFF;
+    -fx-cursor: hand;
+}
+
+.back-button:hover {
+    -fx-background-color: #1b2a49;
+}
+
+.title {
+    -fx-text-fill: #FAFAFA;
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+}
+
+.subtitle {
+    -fx-text-fill: #FAFAFA;
+    -fx-font-size: 14;
+}
+
+/* Status Boxen */
+.card {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #CCC;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 0);
+}
+
+.card-title {
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+}
+
+.card-value {
+    -fx-font-size: 30;
+    -fx-font-weight: bold;
+}
+
+/* Overview Box */
+.overview-title {
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
+
+.add-button {
+    -fx-background-color: #262626;
+    -fx-border-color: none;
+    -fx-font-size: 14;
+    -fx-text-fill: #FFFFFF;
+}
+
+.criminal-card {
+    -fx-border-color: #A1A1A1;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+/* Form */
+.form-title {
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+}
+
+.form-subtitle {
+    -fx-font-size: 12;
+}
+
+.form-button {
+    -fx-background-color: #262626;
+    -fx-border-color: none;
+    -fx-font-size: 14;
+    -fx-text-fill: #FFFFFF;
+}

@@ -12,7 +12,7 @@ CREATE TABLE account (
 CREATE TABLE person (
     id INT PRIMARY KEY AUTO_INCREMENT,
     firstname VARCHAR(255) NOT NULL,
-    surname VARCHAR(100) NOT NULL,
+    surname VARCHAR(100),
     lastname VARCHAR(255) NOT NULL,
     date_of_birth DATE NOT NULL,
     gender VARCHAR(20),
@@ -23,7 +23,7 @@ CREATE TABLE person (
 CREATE TABLE criminal (
     id INT PRIMARY KEY AUTO_INCREMENT,
     person_id INT NOT NULL,
-    criminal_status VARCHAR(50) NOT NULL,
+    criminal_status ENUM('WANTED', 'CAPTURED', 'MISSING') NOT NULL,
     notes TEXT,
     image_link VARCHAR(255),
     FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE
