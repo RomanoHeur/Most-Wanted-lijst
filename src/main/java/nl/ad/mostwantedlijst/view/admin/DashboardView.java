@@ -21,6 +21,8 @@ import java.io.File;
 
 public class DashboardView extends BorderPane {
 
+    private VBox criminalTableContainer;
+
     public DashboardView() {
         initialize();
 
@@ -29,20 +31,29 @@ public class DashboardView extends BorderPane {
 
     private void initialize() {
 
-        // Top container met de header en statusboxen.
-        VBox topContainer = new VBox();
-        topContainer.getChildren().addAll(
-                createHeader(),
-                createStatusBar()
-        );
-        this.setTop(topContainer);
+        // Scrollpane maken om over de pagina te kunnen scrollen.
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
 
         // Center container voor het overzicht box van criminelen.
         VBox centerContainer = new VBox();
         centerContainer.setPadding(new Insets(30, 100, 30, 100));
         centerContainer.setAlignment(Pos.TOP_CENTER);
         centerContainer.getChildren().add(createOverviewBox());
-        this.setCenter(centerContainer);
+
+        // Alle onderdelen toevoegen aan de root.
+        VBox root = new VBox(20);
+        root.getChildren().addAll(
+                createHeader(),
+                createStatusBar(),
+                centerContainer
+        );
+
+        // Root toevoegen aan de scrollpane.
+        scrollPane.setContent(root);
+
+        this.setCenter(scrollPane);
     }
 
     private HBox createHeader() {
@@ -221,41 +232,10 @@ public class DashboardView extends BorderPane {
         HBox headerBox = new HBox(title, spacer, criminalButton);
 
         // Container met de criminelen.
-        VBox criminalTableContainer = new VBox(10);
+        criminalTableContainer = new VBox(10);
         criminalTableContainer.setPadding(new Insets(20, 0,0, 0));
 
-        CriminalController criminalController = new CriminalController();
-
-        // Haalt alle criminelen op via de controller.
-        for (Criminal criminal : criminalController.getAllCriminals()) {
-            HBox criminalBox = new HBox(20);
-            criminalBox.setPadding(new Insets(10));
-            criminalBox.getStyleClass().add("criminal-card");
-
-            // Profiel foto van de crimineel wordt opgehaald als die bestaat.
-            ImageView criminalProfile = new ImageView();
-            if (criminal.getImageLink() != null) {
-                criminalProfile.setImage(new Image("file:" + criminal.getImageLink()));
-                criminalProfile.setFitHeight(50);
-                criminalProfile.setFitWidth(50);
-                criminalProfile.setPreserveRatio(true);
-            }
-
-            // Info over de crimineel
-            VBox infoBox = new VBox(5);
-            Label nameLabel = new Label(criminal.getFirstname() + " " + criminal.getSurname() + " " + criminal.getLastname());
-            Label statusLabel = new Label("Status: " + criminal.getCriminalStatus());
-            Label notesLabel = new Label("Notes: " + criminal.getNotes());
-
-            // Voeg alle labels toe aan de infoBox.
-            infoBox.getChildren().addAll(nameLabel, statusLabel, notesLabel);
-
-            // Foto met info toevoegen aan criminalBox
-            criminalBox.getChildren().addAll(criminalProfile, infoBox);
-
-            // Alles aan de tablecontainer toevoegen.
-            criminalTableContainer.getChildren().add(criminalBox);
-        }
+        refreshCriminalList();
 
         // Alle onderdelen toevoegen aan de overviewBox.
         overviewBox.getChildren().addAll(headerBox, criminalTableContainer);
@@ -348,6 +328,7 @@ public class DashboardView extends BorderPane {
                     selectedImagePath[0]
             );
 
+            refreshCriminalList(); // Opnieuw de lijst inladen.
             stage.close(); // Sluit de form
         });
 
@@ -367,6 +348,43 @@ public class DashboardView extends BorderPane {
         );
 
         stage.show();
+    }
+
+    private void refreshCriminalList() {
+        criminalTableContainer.getChildren().clear(); // Alles leeg maken.
+
+        CriminalController criminalController = new CriminalController();
+
+        // Haalt alle criminelen op via de controller.
+        for (Criminal criminal : criminalController.getAllCriminals()) {
+            HBox criminalBox = new HBox(20);
+            criminalBox.setPadding(new Insets(10));
+            criminalBox.getStyleClass().add("criminal-card");
+
+            // Profiel foto van de crimineel wordt opgehaald als die bestaat.
+            ImageView criminalProfile = new ImageView();
+            if (criminal.getImageLink() != null) {
+                criminalProfile.setImage(new Image("file:" + criminal.getImageLink()));
+                criminalProfile.setFitHeight(50);
+                criminalProfile.setFitWidth(50);
+                criminalProfile.setPreserveRatio(true);
+            }
+
+            // Info over de crimineel
+            VBox infoBox = new VBox(5);
+            Label nameLabel = new Label(criminal.getFirstname() + " " + criminal.getSurname() + " " + criminal.getLastname());
+            Label statusLabel = new Label("Status: " + criminal.getCriminalStatus());
+            Label notesLabel = new Label("Notes: " + criminal.getNotes());
+
+            // Voeg alle labels toe aan de infoBox.
+            infoBox.getChildren().addAll(nameLabel, statusLabel, notesLabel);
+
+            // Foto met info toevoegen aan criminalBox
+            criminalBox.getChildren().addAll(criminalProfile, infoBox);
+
+            // Alles aan de tablecontainer toevoegen.
+            criminalTableContainer.getChildren().add(criminalBox);
+        }
     }
 
 }
