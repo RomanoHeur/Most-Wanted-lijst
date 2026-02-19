@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import nl.ad.mostwantedlijst.Application;
 import nl.ad.mostwantedlijst.controller.criminal.CreateCriminalController;
 import nl.ad.mostwantedlijst.controller.criminal.CriminalController;
+import nl.ad.mostwantedlijst.controller.criminal.DeleteCriminalController;
 import nl.ad.mostwantedlijst.model.management.Criminal;
 import nl.ad.mostwantedlijst.model.management.CriminalStatus;
 import nl.ad.mostwantedlijst.service.FileChooserService;
@@ -379,8 +380,48 @@ public class DashboardView extends BorderPane {
             // Voeg alle labels toe aan de infoBox.
             infoBox.getChildren().addAll(nameLabel, statusLabel, notesLabel);
 
+            // Spacer maken zodat knoppen aan de rechterkant komen.
+            Region spacer = new Region();
+            HBox.setHgrow(spacer, Priority.ALWAYS);
+
+            // Edit icon maken
+            ImageView editIcon = new ImageView(
+                    Application.class.getResource("images/edit-icon.png").toString()
+            );
+            editIcon.setPreserveRatio(true);
+            editIcon.setFitHeight(15);
+
+            Button editButton = new Button("", editIcon); // Alleen het icoontje tonen.
+            editButton.setMaxWidth(35);
+
+            // Delete icon maken.
+            ImageView deleteIcon = new ImageView(
+                    Application.class.getResource("images/delete-icon.png").toString()
+            );
+            deleteIcon.setPreserveRatio(true);
+            deleteIcon.setFitHeight(15);
+
+            Button deleteButton = new Button("", deleteIcon); // Alleen het icoontje tonen.
+            deleteButton.setMaxWidth(35);
+
+            // Actie toevoegen aan de verwijder knop.
+            deleteButton.setOnAction(_ -> {
+                DeleteCriminalController deleteCriminalController = new DeleteCriminalController();
+
+                // Crimineel wordt verwijderd via de controller
+                deleteCriminalController.deleteCriminal(criminal.getId());
+
+                // Opnieuw lijst met criminelen laden.
+                refreshCriminalList();
+            });
+
+            // Button toevoegen aan box.
+            HBox iconBox = new HBox(editButton, deleteButton);
+            iconBox.setSpacing(5);
+            iconBox.setAlignment(Pos.CENTER);
+
             // Foto met info toevoegen aan criminalBox
-            criminalBox.getChildren().addAll(criminalProfile, infoBox);
+            criminalBox.getChildren().addAll(criminalProfile, infoBox, spacer, iconBox);
 
             // Alles aan de tablecontainer toevoegen.
             criminalTableContainer.getChildren().add(criminalBox);

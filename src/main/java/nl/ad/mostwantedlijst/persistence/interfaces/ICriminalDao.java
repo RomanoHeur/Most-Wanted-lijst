@@ -9,4 +9,8 @@ public interface ICriminalDao {
     void save(Criminal criminal);
 
     List<Criminal> findAll();
+
+    Criminal findById(int criminalId);
+
+    void delete(int criminalId);
 }

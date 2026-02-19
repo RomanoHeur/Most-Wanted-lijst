@@ -37,7 +37,7 @@ public class CriminalDao implements ICriminalDao {
             personStatement.setString(6, criminal.getNationality());
             personStatement.setString(7, criminal.getNotes());
 
-            // Voert methode uit.
+            // Voert statement uit.
             personStatement.executeUpdate();
 
             // Ophalen van een gegenereerde id.
@@ -72,14 +72,15 @@ public class CriminalDao implements ICriminalDao {
 
         try {
             // Crimineel info joinen met die van de persoon info.
-            PreparedStatement statement = connection.prepareStatement("SELECT p.firstname, p.surname, p.lastname, p.date_of_birth, p.gender, p.nationality, c.criminal_status, c.notes, c.image_link FROM criminal c JOIN person p ON c.person_id = p.id");
+            PreparedStatement statement = connection.prepareStatement("SELECT p.id, p.firstname, p.surname, p.lastname, p.date_of_birth, p.gender, p.nationality, c.criminal_status, c.notes, c.image_link FROM criminal c JOIN person p ON c.person_id = p.id");
 
-            // Voert methode uit.
+            // Voert statement uit.
             ResultSet resultSet = statement.executeQuery();
 
-            // Maakt crimineel objecten aan.
+            // Maakt crimineel object aan.
             while (resultSet.next()) {
                 Criminal criminal = new Criminal(
+                        resultSet.getInt("id"),
                         resultSet.getString("firstname"),
                         resultSet.getString("surname"),
                         resultSet.getString("lastname"),
@@ -102,4 +103,64 @@ public class CriminalDao implements ICriminalDao {
         }
     }
 
+    /**
+     * Zoekt een crimineel op basis van de ID.
+     * @param criminalId ID van de crimineel object.
+     * @return Crimineel object of null als die hem niet vindt.
+     */
+    @Override
+    public Criminal findById(int criminalId) {
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT p.id, p.firstname, p.surname, p.lastname, p.date_of_birth, p.gender, p.nationality, c.criminal_status, c.notes, c.image_link, c.id FROM criminal c JOIN person p ON c.person_id = p.id WHERE c.id = ?");
+
+            // Statement data instellen.
+            statement.setInt(1, criminalId);
+
+            // Statement uitvoeren.
+            ResultSet resultSet = statement.executeQuery();
+
+            // Maakt object op basis van de waarden uit de database.
+            if (resultSet.next()) {
+                return new Criminal(
+                        resultSet.getInt("id"),
+                        resultSet.getString("firstname"),
+                        resultSet.getString("surname"),
+                        resultSet.getString("lastname"),
+                        resultSet.getDate("date_of_birth").toLocalDate(),
+                        resultSet.getString("gender"),
+                        resultSet.getString("nationality"),
+                        CriminalStatus.valueOf(resultSet.getString("criminal_status")),
+                        resultSet.getString("notes"),
+                        resultSet.getString("image_link")
+                );
+            }
+
+            return null;
+
+        } catch (SQLException exception) {
+            throw new IllegalStateException("Kon geen verbinding maken met de database", exception);
+        }
+
+    }
+
+    /**
+     * Verwijdert crimineel uit database, op basis via de person. Dit komt door de DELETE CASCADE in de database.
+     * @param personId ID van de persoon die verwijderd moet worden.
+     */
+    @Override
+    public void delete(int personId) {
+        try {
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM person WHERE id = ?");
+
+            // Statement data instellen.
+            statement.setInt(1, personId);
+
+            // Voert statement uit.
+            statement.execute();
+
+        } catch (SQLException exception) {
+            throw new IllegalStateException("Kon geen verbinding maken met de database", exception);
+        }
+
+    }
 }
