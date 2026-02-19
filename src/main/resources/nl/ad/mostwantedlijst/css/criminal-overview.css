@@ -1,3 +1,12 @@
+/* Scrollpane */
+.scroll-pane {
+    -fx-background: transparent;
+    -fx-background-color: #1A1A1A;
+}
+
+.scroll-bar:vertical {
+    -fx-pref-width: 8;
+}
 /* Header */
 .header {
     -fx-background-color: #000000;
@@ -15,6 +24,87 @@
 }
 
 .login-button {
+    -fx-background-color: #F08000;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 16;
+    -fx-border: none;
+}
+
+/* Subheader */
+.subheader {
+    -fx-background-color: #F08000;
+}
+
+.subheader-title {
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+/* Info box */
+.infobox {
+    -fx-background-color: #1A1A1A;
+}
+
+.infobox-title {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-font-size: 30;
+}
+
+.infobox-description {
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
+    -fx-text-fill: #A1A1A1;
+}
+
+.infobox-report-button {
+    -fx-background-color: #F08000;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 16;
+    -fx-border: none;
+}
+
+/* Criminal Section */
+.title-box {
+    -fx-background-color: #1A1A1A;
+}
+
+.criminal-section-title {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-font-size: 26;
+}
+
+.criminal-result {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
+
+.criminal-card {
+    -fx-background-color: #272727;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-font-family: Arial;
+}
+
+.criminal-name {
+    -fx-font-size: 22;
+    -fx-font-weight: bold;
+}
+
+.criminal-status {
+    -fx-font-size: 16;
+    -fx-font-weight: 500;
+}
+
+.criminal-nationality {
+    -fx-font-size: 16;
+    -fx-font-weight: 500;
+}
+
+.criminal-button {
     -fx-background-color: #F08000;
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 16;
