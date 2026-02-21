@@ -19,6 +19,8 @@ import nl.ad.mostwantedlijst.service.FileChooserService;
 import nl.ad.mostwantedlijst.view.CriminalOverview;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DashboardView extends BorderPane {
 
@@ -286,6 +288,8 @@ public class DashboardView extends BorderPane {
         statusBox.getItems().addAll(CriminalStatus.values());
         statusBox.getSelectionModel().selectFirst();
 
+        TextField crimesField = new TextField();
+
         Button imageButton = new Button("Select Image");
         final String[] selectedImagePath = {null}; // Checkt welk bestand geselecteerd is.
         Label imagePathLabel = new Label("No image selected");
@@ -326,6 +330,7 @@ public class DashboardView extends BorderPane {
                     nationalityField.getText(),
                     noteArea.getText(),
                     statusBox.getValue(),
+                    crimesField.getText(),
                     selectedImagePath[0]
             );
 
@@ -344,6 +349,7 @@ public class DashboardView extends BorderPane {
                 new Label("Nationaliteit: *"), nationalityField,
                 new Label("Notities: *"), noteArea,
                 new Label("Status: *"), statusBox,
+                new Label("Misdrijven (Gescheiden door komma): *"), crimesField,
                 imageBox,
                 saveButton
         );

@@ -268,7 +268,7 @@ public class CriminalOverview extends BorderPane {
 
         // Actie toevoegen aan de knop om naar de criminal details pagina te gaan.
         detailsButton.setOnAction(_ -> {
-            CriminalDetailsOverview criminalDetailsOverview = new CriminalDetailsOverview();
+            CriminalDetailsOverview criminalDetailsOverview = new CriminalDetailsOverview(criminal.getId());
             Application.setStage(criminalDetailsOverview);
         });
 

@@ -25,17 +25,9 @@ CREATE TABLE criminal (
     person_id INT NOT NULL,
     criminal_status ENUM('WANTED', 'CAPTURED', 'MISSING') NOT NULL,
     notes TEXT,
+    crimes VARCHAR(255),
     image_link VARCHAR(255),
     FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE
-);
-
-CREATE TABLE crime (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    criminal_id INT NOT NULL,
-    crime_type varchar(50) NOT NULL,
-    description TEXT,
-    date DATE,
-    FOREIGN KEY (criminal_id) REFERENCES criminal(id) ON DELETE CASCADE
 );
 
 CREATE TABLE report (
@@ -49,8 +41,8 @@ CREATE TABLE report (
 );
 
 -- INDEXES
-CREATE INDEX idx_crime_criminal_id
-ON crime (criminal_id);
+CREATE INDEX idx_criminal_crimes
+ON criminal (crimes(255));
 
 CREATE INDEX idx_report_date
 ON report (date);

@@ -46,13 +46,14 @@ public class CriminalDao implements ICriminalDao {
                 int personId = resultSet.getInt(1);
 
                 // Een crimineel toevoegen.
-                PreparedStatement criminalStatement = connection.prepareStatement("INSERT INTO criminal (person_id, criminal_status, notes, image_link) VALUES (?, ?, ?, ?)");
+                PreparedStatement criminalStatement = connection.prepareStatement("INSERT INTO criminal (person_id, criminal_status, notes, crimes, image_link) VALUES (?, ?, ?, ?, ?)");
 
                 // Stelt alle waarden op voor de criminieel.
                 criminalStatement.setInt(1, personId);
                 criminalStatement.setString(2, criminal.getCriminalStatus().name());
                 criminalStatement.setString(3, criminal.getNotes());
-                criminalStatement.setString(4, criminal.getImageLink());
+                criminalStatement.setString(4, criminal.getCrimes());
+                criminalStatement.setString(5, criminal.getImageLink());
 
                 // Voert de methode uit.
                 criminalStatement.executeUpdate();
@@ -72,7 +73,7 @@ public class CriminalDao implements ICriminalDao {
 
         try {
             // Crimineel info joinen met die van de persoon info.
-            PreparedStatement statement = connection.prepareStatement("SELECT p.id, p.firstname, p.surname, p.lastname, p.date_of_birth, p.gender, p.nationality, c.criminal_status, c.notes, c.image_link FROM criminal c JOIN person p ON c.person_id = p.id");
+            PreparedStatement statement = connection.prepareStatement("SELECT p.id, p.firstname, p.surname, p.lastname, p.date_of_birth, p.gender, p.nationality, c.criminal_status, c.notes, c.crimes, c.image_link FROM criminal c JOIN person p ON c.person_id = p.id");
 
             // Voert statement uit.
             ResultSet resultSet = statement.executeQuery();
@@ -89,6 +90,7 @@ public class CriminalDao implements ICriminalDao {
                         resultSet.getString("nationality"),
                         CriminalStatus.valueOf(resultSet.getString("criminal_status")),
                         resultSet.getString("notes"),
+                        resultSet.getString("crimes"),
                         resultSet.getString("image_link")
                 );
 
@@ -111,7 +113,7 @@ public class CriminalDao implements ICriminalDao {
     @Override
     public Criminal findById(int criminalId) {
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT p.id, p.firstname, p.surname, p.lastname, p.date_of_birth, p.gender, p.nationality, c.criminal_status, c.notes, c.image_link, c.id FROM criminal c JOIN person p ON c.person_id = p.id WHERE c.id = ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT p.id, p.firstname, p.surname, p.lastname, p.date_of_birth, p.gender, p.nationality, c.criminal_status, c.notes, c.crimes, c.image_link, c.id FROM criminal c JOIN person p ON c.person_id = p.id WHERE c.id = ?");
 
             // Statement data instellen.
             statement.setInt(1, criminalId);
@@ -131,6 +133,7 @@ public class CriminalDao implements ICriminalDao {
                         resultSet.getString("nationality"),
                         CriminalStatus.valueOf(resultSet.getString("criminal_status")),
                         resultSet.getString("notes"),
+                        resultSet.getString("crimes"),
                         resultSet.getString("image_link")
                 );
             }

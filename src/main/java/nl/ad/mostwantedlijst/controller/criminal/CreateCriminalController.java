@@ -18,10 +18,10 @@ public class CreateCriminalController {
         this.criminalDao = new CriminalDao();
     }
 
-    public void createCriminal(String firstname, String surname, String lastname, LocalDate dateOfBirth, String gender, String nationality, String notes, CriminalStatus criminalStatus, String imagePath) {
+    public void createCriminal(String firstname, String surname, String lastname, LocalDate dateOfBirth, String gender, String nationality, String notes, CriminalStatus criminalStatus, String crimes, String imagePath) {
 
         // Maakt crimineel object aan.
-        Criminal criminal = new Criminal(firstname, surname, lastname, dateOfBirth, gender, nationality, criminalStatus, notes, imagePath);
+        Criminal criminal = new Criminal(firstname, surname, lastname, dateOfBirth, gender, nationality, criminalStatus, notes, crimes, imagePath);
 
         // Slaat de crimineel op via de Dao.
         criminalDao.save(criminal);
