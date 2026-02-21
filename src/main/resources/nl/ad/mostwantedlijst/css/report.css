@@ -1,0 +1,78 @@
+/* Header */
+.header {
+    -fx-background-color: #000000;
+}
+
+.back-button {
+    -fx-background-color: none;
+    -fx-border-color: none;
+    -fx-font-size: 14;
+    -fx-text-fill: #FFFFFF;
+    -fx-cursor: hand;
+}
+
+.back-button:hover {
+    -fx-background-color: #1b2a49;
+}
+
+.title {
+    -fx-text-fill: #FAFAFA;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
+
+/* Report Container */
+.report-container {
+    -fx-background-color: #1A1A1A;
+}
+
+.privacy-box {
+    -fx-background-color: rgba(255, 149, 28, 0.5);
+    -fx-border-color: #F08000;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+}
+
+.privacy-title {
+    -fx-font-size: 25;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.privacy-rules {
+    -fx-font-size: 20;
+    -fx-text-fill: #FFFFFF;
+}
+
+.report-box {
+    -fx-border-color: #F08000;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+}
+
+.report-title {
+    -fx-font-size: 25;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.report-subTitle {
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-width: 0 0 2 0;
+    -fx-border-color: #FFFFFF;
+}
+
+.form-labels {
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.report-button {
+    -fx-background-color: #F08000;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 16;
+    -fx-border: none;
+}

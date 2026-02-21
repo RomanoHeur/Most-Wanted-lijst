@@ -106,6 +106,10 @@ public class CriminalDetailsOverview extends BorderPane {
         reportButton.setAlignment(Pos.CENTER);
         reportButton.getStyleClass().add("report-button");
 
+        reportButton.setOnAction(_ -> {
+            Application.setStage(new ReportView(criminalId));
+        });
+
         // Voeg alles toe aan de sidebar.
         sideBar.getChildren().addAll(imageContainer, reportButton);
 
