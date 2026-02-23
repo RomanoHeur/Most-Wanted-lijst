@@ -14,6 +14,8 @@ import nl.ad.mostwantedlijst.controller.criminal.CriminalController;
 import nl.ad.mostwantedlijst.model.management.Criminal;
 import nl.ad.mostwantedlijst.view.admin.LoginView;
 
+import java.util.List;
+
 /**
  * View voor het overzicht van alle criminelen.
  */
@@ -152,20 +154,8 @@ public class CriminalOverview extends BorderPane {
         descriptionBox.setSpacing(4);
         descriptionBox.setAlignment(Pos.CENTER);
 
-        // Icon maken voor de button.
-        ImageView reportIcon = new ImageView(
-                Application.class.getResource("images/white-warning.png").toString()
-        );
-        reportIcon.setPreserveRatio(true);
-        reportIcon.setFitHeight(15);
-
-        // Melding knop maken en hierbij de icon aan toevoegen.
-        Button reportButton = new Button("Melding maken", reportIcon);
-        reportButton.getStyleClass().add("infobox-report-button");
-        reportButton.setPadding(new Insets(6, 18, 6, 18));
-
         // Beschrijvingen toevoegen aan container.
-        VBox textContainer = new VBox(descriptionBox, reportButton);
+        VBox textContainer = new VBox(descriptionBox);
         textContainer.setSpacing(30);
         textContainer.setAlignment(Pos.CENTER);
         textContainer.setMaxWidth(700);
@@ -201,11 +191,13 @@ public class CriminalOverview extends BorderPane {
     }
 
     private VBox createCriminalContainer() {
+        CriminalController criminalController = new CriminalController();
+        List<Criminal> criminals = criminalController.getAllCriminals();
+
         VBox container = new VBox(35);
         container.setPadding(new Insets(40, 70, 50, 70));
 
-        //Todo: Nog dynamisch maken.
-        Label criminalResult = new Label("4 Resultaten gevonden");
+        Label criminalResult = new Label(criminals.size() + " Resultaten gevonden");
         criminalResult.getStyleClass().add("criminal-result");
 
         // Tilepane maken voor alle criminal cards.
@@ -215,10 +207,8 @@ public class CriminalOverview extends BorderPane {
         tilePane.setPrefColumns(4); // Max 4 per rij.
         tilePane.getStyleClass().add("criminal-section");
 
-        CriminalController criminalController = new CriminalController();
-
         // Om alle criminelen op te halen en ze opnieuw weer te geven in de criminal card.
-        for (Criminal criminal : criminalController.getAllCriminals()) {
+        for (Criminal criminal : criminals) {
             tilePane.getChildren().add(createCriminalCard(criminal));
         }
 

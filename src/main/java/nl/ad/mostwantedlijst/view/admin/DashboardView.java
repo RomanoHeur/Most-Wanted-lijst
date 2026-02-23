@@ -113,6 +113,11 @@ public class DashboardView extends BorderPane {
     }
 
     private HBox createStatusBar() {
+        CriminalController criminalController = new CriminalController();
+        List<Criminal> criminals = criminalController.getAllCriminals();
+
+        ReportController reportController = new ReportController();
+        List<Report> reports = reportController.getAllReports();
 
         // Statistiekenbalk maken.
         HBox statsBar = new HBox(50);
@@ -120,22 +125,21 @@ public class DashboardView extends BorderPane {
         statsBar.setPadding(new Insets(25, 0, 0, 0));
 
         // Voegt meerdere statistieken eraan toe.
-        //TODO: Moet nog dynamisch worden gemaakt.
         statsBar.getChildren().addAll(
                 createCriminalStatusBox(
-                        "Actief gezochte criminelen",
-                        "5"
+                        "Actief gezochte criminelen" ,
+                        criminals.size()
                 ),
                 createReportStatusBox(
                         "Meldingen",
-                        "2"
+                        reports.size()
                 )
         );
 
         return statsBar;
     }
 
-    private VBox createCriminalStatusBox(String criminalTitle, String criminalValue) {
+    private VBox createCriminalStatusBox(String criminalTitle, int criminalValue) {
 
         // Card aanmaken voor de statussen.
         VBox criminalCard = new VBox(20);
@@ -148,7 +152,7 @@ public class DashboardView extends BorderPane {
         titleLabel.getStyleClass().add("card-title");
 
         // Value aanmaken.
-        Label valueLabel = new Label(criminalValue);
+        Label valueLabel = new Label("" + criminalValue);
         valueLabel.getStyleClass().add("card-value");
 
         // Spacer maken
@@ -204,7 +208,7 @@ public class DashboardView extends BorderPane {
         return toggleBox;
     }
 
-    private VBox createReportStatusBox(String reportTitle, String reportValue) {
+    private VBox createReportStatusBox(String reportTitle, int reportValue) {
 
         // Card aanmaken voor de statussen.
         VBox reportCard = new VBox(20);
@@ -217,7 +221,7 @@ public class DashboardView extends BorderPane {
         titleLabel.getStyleClass().add("card-title");
 
         // Value aanmaken.
-        Label valueLabel = new Label(reportValue);
+        Label valueLabel = new Label("" + reportValue);
         valueLabel.getStyleClass().add("card-value");
 
         // Spacer maken
