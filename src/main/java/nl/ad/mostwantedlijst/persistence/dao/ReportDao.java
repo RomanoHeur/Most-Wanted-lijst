@@ -5,6 +5,8 @@ import nl.ad.mostwantedlijst.persistence.interfaces.IReportDao;
 import nl.ad.mostwantedlijst.service.DatabaseProviderService;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReportDao implements IReportDao {
 
@@ -41,6 +43,47 @@ public class ReportDao implements IReportDao {
             }
         } catch (SQLException exception) {
             throw new IllegalStateException("Kon geen verbinding maken met de database.", exception);
+        }
+    }
+
+
+    /**
+     * Haalt alle meldingen op uit de database.
+     * @return Een lijst met alle Report objecten.
+     */
+    @Override
+    public List<Report> findAll() {
+        List<Report> reports = new ArrayList<>();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT r.id, r.description, r.location, r.date, r.report_name, c.id AS criminal_id, p.firstname, p.lastname FROM report r JOIN criminal c ON r.criminal_id = c.id JOIN person p ON c.person_id = p.id");
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+
+                // Samenstellen van de naam.
+                String fullName = resultSet.getString("firstname") + " " + resultSet.getString("lastname");
+
+                // Maakt nieuw Report object aan.
+                Report report = new Report(
+                        resultSet.getInt("id"),
+                        resultSet.getString("description"),
+                        resultSet.getString("location"),
+                        resultSet.getDate("date").toLocalDate(),
+                        resultSet.getString("report_name"),
+                        resultSet.getInt("criminal_id"),
+                        fullName
+                );
+
+                // Voegt de report toe aan de lijst.
+                reports.add(report);
+            }
+
+            return reports;
+
+        } catch (SQLException exception) {
+            throw new IllegalStateException("Kon geen verbinding maken met de database", exception);
         }
     }
 

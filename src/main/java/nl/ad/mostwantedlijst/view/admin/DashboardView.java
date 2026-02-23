@@ -13,8 +13,11 @@ import nl.ad.mostwantedlijst.Application;
 import nl.ad.mostwantedlijst.controller.criminal.CreateCriminalController;
 import nl.ad.mostwantedlijst.controller.criminal.CriminalController;
 import nl.ad.mostwantedlijst.controller.criminal.DeleteCriminalController;
+import nl.ad.mostwantedlijst.controller.report.ReportController;
 import nl.ad.mostwantedlijst.model.management.Criminal;
 import nl.ad.mostwantedlijst.model.management.CriminalStatus;
+import nl.ad.mostwantedlijst.model.report.Report;
+import nl.ad.mostwantedlijst.model.type.AdminViewType;
 import nl.ad.mostwantedlijst.service.FileChooserService;
 import nl.ad.mostwantedlijst.view.CriminalOverview;
 
@@ -25,6 +28,7 @@ import java.util.List;
 public class DashboardView extends BorderPane {
 
     private VBox criminalTableContainer;
+    private VBox contentContainer;
 
     public DashboardView() {
         initialize();
@@ -39,19 +43,22 @@ public class DashboardView extends BorderPane {
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
 
-        // Center container voor het overzicht box van criminelen.
-        VBox centerContainer = new VBox();
-        centerContainer.setPadding(new Insets(30, 100, 30, 100));
-        centerContainer.setAlignment(Pos.TOP_CENTER);
-        centerContainer.getChildren().add(createOverviewBox());
+        // Content container voor het overzicht box van criminelen.
+        contentContainer = new VBox();
+        contentContainer.setPadding(new Insets(15, 100, 30, 100));
+        contentContainer.setAlignment(Pos.TOP_CENTER);
 
         // Alle onderdelen toevoegen aan de root.
         VBox root = new VBox(20);
         root.getChildren().addAll(
                 createHeader(),
                 createStatusBar(),
-                centerContainer
+                createSwitchButtons(),
+                contentContainer
         );
+
+        // Zodat standaard de criminelen overview als eerst wordt ingeladen.
+        switchView(AdminViewType.CRIMINAL_OVERVIEW);
 
         // Root toevoegen aan de scrollpane.
         scrollPane.setContent(root);
@@ -163,6 +170,39 @@ public class DashboardView extends BorderPane {
         return criminalCard;
     }
 
+    private HBox createSwitchButtons() {
+        ToggleGroup toggleGroup = new ToggleGroup();
+
+        // Toggle knop maken voor de criminelen.
+        ToggleButton criminalButton = new ToggleButton("Criminelen");
+        criminalButton.setToggleGroup(toggleGroup);
+        criminalButton.setSelected(true);
+        criminalButton.getStyleClass().add("toggle-button");
+
+        // Actie toevoegen aan de crimineel knop, zodat het overzicht van de criminelen wordt getoond.
+        criminalButton.setOnAction(_ -> {
+            switchView(AdminViewType.CRIMINAL_OVERVIEW);
+        });
+
+        // Toggle knop maken voor de meldingen.
+        ToggleButton reportButton = new ToggleButton("Meldingen");
+        reportButton.setToggleGroup(toggleGroup);
+        reportButton.getStyleClass().add("toggle-button");
+
+        // Actie toevoegen aan de meldingen knop, zodat het overzicht van de meldingen wordt getoond.
+        reportButton.setOnAction(_ -> {
+            switchView(AdminViewType.REPORT_OVERVIEW);
+        });
+
+        // Knoppen toevoegen aan een box.
+        HBox toggleBox = new HBox(criminalButton, reportButton);
+        toggleBox.setAlignment(Pos.TOP_LEFT);
+        toggleBox.setSpacing(8);
+        toggleBox.setPadding(new Insets(0, 0, 0, 125));
+
+        return toggleBox;
+    }
+
     private VBox createReportStatusBox(String reportTitle, String reportValue) {
 
         // Card aanmaken voor de statussen.
@@ -199,7 +239,7 @@ public class DashboardView extends BorderPane {
         return reportCard;
     }
 
-    private VBox createOverviewBox() {
+    private VBox createCriminalOverview() {
 
         // Overview card maken.
         VBox overviewBox = new VBox();
@@ -242,6 +282,36 @@ public class DashboardView extends BorderPane {
 
         // Alle onderdelen toevoegen aan de overviewBox.
         overviewBox.getChildren().addAll(headerBox, criminalTableContainer);
+
+        return overviewBox;
+    }
+
+    private VBox createReportOverview() {
+
+        // Overview card maken.
+        VBox overviewBox = new VBox();
+        overviewBox.setAlignment(Pos.TOP_LEFT);
+        overviewBox.setPrefSize(800, 500);
+        overviewBox.setMaxWidth(Double.MAX_VALUE);
+        overviewBox.setPadding(new Insets(20, 45, 20, 45));
+        overviewBox.getStyleClass().add("card");
+
+        // Label maken.
+        Label title = new Label("Meldingen inzien");
+        title.getStyleClass().add("overview-title");
+
+        // Tilepane aanmaken om soort tabellen van de report cards te krijgen.
+        TilePane reportTilePane = new TilePane();
+        reportTilePane.setHgap(25);
+        reportTilePane.setVgap(20);
+        reportTilePane.setPadding(new Insets(20, 0, 0, 0));
+        reportTilePane.setPrefColumns(2); // Max 2 per kolom.
+        reportTilePane.setAlignment(Pos.CENTER_LEFT);
+
+        refreshReportList(reportTilePane);
+
+        // Alle onderdelen toevoegen aan de overviewBox.
+        overviewBox.getChildren().addAll(title, reportTilePane);
 
         return overviewBox;
     }
@@ -431,6 +501,82 @@ public class DashboardView extends BorderPane {
 
             // Alles aan de tablecontainer toevoegen.
             criminalTableContainer.getChildren().add(criminalBox);
+        }
+    }
+
+    private void refreshReportList(TilePane overviewBox) {
+        overviewBox.getChildren().clear(); // Alles leeg maken.
+
+        ReportController reportController = new ReportController();
+
+        // Haalt alle meldingen op via de controller.
+        for (Report report : reportController.getAllReports()) {
+            HBox reportBox = new HBox();
+            reportBox.setPadding(new Insets(20));
+            reportBox.setPrefWidth(550);
+            reportBox.getStyleClass().add("criminal-card");
+
+            // Maakt een label voor de datum aan.
+            Label dateLabel = new Label("" + report.getDate());
+            dateLabel.getStyleClass().add("date-label");
+
+            // Label wordt toegevoegd aan een soort container.
+            StackPane dateContainer = new StackPane(dateLabel);
+            dateContainer.setMaxSize(75, 8);
+            dateContainer.getStyleClass().add("date-container");
+
+            // Image aanmaken van een persoontje.
+            ImageView personIcon = new ImageView(Application.class.getResource("images/report-icon.png").toString());
+            personIcon.setPreserveRatio(true);
+            personIcon.setFitHeight(15);
+
+            // Maakt een name label aan van degene die een melding heeft gemaakt.
+            Label nameLabel = new Label(report.getReportName());
+            nameLabel.getStyleClass().add("title-labels");
+
+            // Image en nameLabel toevoegen aan een box.
+            HBox nameContainer = new HBox(personIcon, nameLabel);
+            nameContainer.setAlignment(Pos.CENTER_LEFT);
+            nameContainer.setMaxSize(150, 8);
+            nameContainer.getStyleClass().add("date-container");
+
+            // Datumcontainer en naam container toevoegen aan een box.
+            HBox containerBox = new HBox(dateContainer, nameContainer);
+            containerBox.setSpacing(15);
+            containerBox.setPadding(new Insets(0, 0, 8, 0));
+
+            // Label maken voor de gezochte crimineel.
+            Label criminalLabel = new Label("Gezochte persoon: " + report.getCriminalName());
+            criminalLabel.getStyleClass().add("criminal-label");
+
+            // Label maken van de locatie.
+            Label locationLabel = new Label("Locatie: " + report.getLocation());
+            locationLabel.getStyleClass().add("location-label");
+
+            // Label maken voor de beschrijving.
+            Label descriptionLabel = new Label(report.getDescription());
+            descriptionLabel.getStyleClass().add("description-label");
+            descriptionLabel.setMaxWidth(550);
+            descriptionLabel.setWrapText(true);
+
+            // Alle onderdelen toevoegen aan een box.
+            VBox firstBox = new VBox(containerBox, criminalLabel, locationLabel, descriptionLabel);
+            firstBox.setSpacing(4);
+
+            // De box toevoegen aan reportBox.
+            reportBox.getChildren().add(firstBox);
+
+            overviewBox.getChildren().add(reportBox);
+        }
+    }
+
+    private void switchView(AdminViewType adminViewType) {
+        contentContainer.getChildren().clear(); // Alles leeg maken.
+
+        // Switch van het adminViewType om te kunnen wisselen van Overview.
+        switch (adminViewType) {
+            case CRIMINAL_OVERVIEW -> contentContainer.getChildren().add(createCriminalOverview());
+            case REPORT_OVERVIEW -> contentContainer.getChildren().add(createReportOverview());
         }
     }
 

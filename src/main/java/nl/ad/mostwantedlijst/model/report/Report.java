@@ -11,17 +11,19 @@ public class Report {
     private String location;
     private LocalDate date;
     private String reportName;
-    private Criminal criminal;
+    private int criminalId;
+    private String criminalName;
 
     public Report() { }
 
-    public Report(int id, String description, String location, LocalDate date, String reportName, Criminal criminal) {
+    public Report(int id, String description, String location, LocalDate date, String reportName, int criminalId, String criminalName) {
         this.id = id;
         this.description = description;
         this.location = location;
         this.date = date;
         this.reportName = reportName;
-        this.criminal = criminal;
+        this.criminalId = criminalId;
+        this.criminalName = criminalName;
     }
 
     public Report(String description, String location, LocalDate date, String reportName) {
@@ -71,12 +73,20 @@ public class Report {
         this.reportName = reportName;
     }
 
-    public Criminal getCriminal() {
-        return criminal;
+    public int getCriminalId() {
+        return criminalId;
     }
 
-    public void setCriminal(Criminal criminal) {
-        this.criminal = criminal;
+    public void setCriminalId(int criminalId) {
+        this.criminalId = criminalId;
+    }
+
+    public String getCriminalName() {
+        return criminalName;
+    }
+
+    public void setCriminalName(String criminalName) {
+        this.criminalName = criminalName;
     }
 
     @Override

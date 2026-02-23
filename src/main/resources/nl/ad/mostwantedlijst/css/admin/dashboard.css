@@ -45,6 +45,21 @@
     -fx-font-weight: bold;
 }
 
+/* Toggle Buttons */
+.toggle-button {
+    -fx-background-color: #272727;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 16;
+    -fx-padding: 8 20 8 20;
+    -fx-background-radius: 6;
+    -fx-alignment: center;
+}
+
+.toggle-button:selected {
+    -fx-background-color: #F08000;
+    -fx-text-fill: #FFFFFF;
+}
+
 /* Overview Box */
 .overview-title {
     -fx-font-size: 20;
@@ -64,6 +79,34 @@
     -fx-border-radius: 5;
 }
 
+/* Report Overview */
+.criminal-label {
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+}
+
+.date-label {
+    -fx-font-size: 10;
+}
+
+.date-container {
+    -fx-background-color: #ededed;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+    -fx-padding: 4 10;
+}
+
+.location-label {
+    -fx-font-size: 12;
+    -fx-font-weight: bold;
+    -fx-text-fill: #262626;
+}
+
+.description-label {
+    -fx-font-size: 12;
+    -fx-text-fill: #A1A1A1;
+}
+
 /* Form */
 .form-title {
     -fx-font-size: 15;
@@ -80,3 +123,4 @@
     -fx-font-size: 14;
     -fx-text-fill: #FFFFFF;
 }
+
