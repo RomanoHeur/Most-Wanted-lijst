@@ -19,6 +19,7 @@ import nl.ad.mostwantedlijst.model.management.Criminal;
 import nl.ad.mostwantedlijst.model.management.CriminalStatus;
 import nl.ad.mostwantedlijst.model.report.Report;
 import nl.ad.mostwantedlijst.model.type.AdminViewType;
+import nl.ad.mostwantedlijst.persistence.dao.CriminalDao;
 import nl.ad.mostwantedlijst.service.FileChooserService;
 import nl.ad.mostwantedlijst.view.CriminalOverview;
 
@@ -381,7 +382,7 @@ public class DashboardView extends BorderPane {
 
             // Actie toevoegen aan de verwijder knop.
             deleteButton.setOnAction(_ -> {
-                DeleteCriminalController deleteCriminalController = new DeleteCriminalController();
+                DeleteCriminalController deleteCriminalController = new DeleteCriminalController(new CriminalDao());
 
                 // Crimineel wordt verwijderd via de controller
                 deleteCriminalController.deleteCriminal(criminal.getId());

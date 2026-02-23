@@ -12,8 +12,9 @@ public class DeleteCriminalController {
 
     private ICriminalDao criminalDao;
 
-    public DeleteCriminalController() {
-        this.criminalDao = new CriminalDao();
+    // Hier wordt de DAO geinitialiseerd.
+    public DeleteCriminalController(ICriminalDao criminalDao) {
+        this.criminalDao = criminalDao;
     }
 
     public void deleteCriminal(int criminalId) {
