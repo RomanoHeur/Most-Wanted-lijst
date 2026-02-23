@@ -13,6 +13,7 @@ import nl.ad.mostwantedlijst.Application;
 import nl.ad.mostwantedlijst.controller.criminal.CreateCriminalController;
 import nl.ad.mostwantedlijst.controller.criminal.CriminalController;
 import nl.ad.mostwantedlijst.controller.criminal.DeleteCriminalController;
+import nl.ad.mostwantedlijst.controller.criminal.EditCriminalController;
 import nl.ad.mostwantedlijst.controller.report.ReportController;
 import nl.ad.mostwantedlijst.model.management.Criminal;
 import nl.ad.mostwantedlijst.model.management.CriminalStatus;
@@ -316,117 +317,6 @@ public class DashboardView extends BorderPane {
         return overviewBox;
     }
 
-    private void createCriminalForm() {
-
-        // Node aanmaken.
-        VBox root = new  VBox(5);
-        root.setPadding(new Insets(20));
-
-        // Nieuwe stage aanmaken om een soort modal te krijgen.
-        Stage stage = new Stage();
-        stage.setResizable(false);
-        Scene scene = new Scene(root, 800, 800);
-        stage.setScene(scene);
-        scene.getStylesheets().add(
-                Application.class.getResource("css/admin/dashboard.css").toString()
-        );
-
-        // Form titel maken.
-        Label createTitle = new Label("Persoon toevoegen");
-        createTitle.getStyleClass().add("form-title");
-
-        // Form subtitel maken.
-        Label createSubtitle = new Label("Maak hier een crimineel aan om toe te voegen");
-        createSubtitle.getStyleClass().add("form-subtitle");
-
-        VBox titleBox = new VBox(createTitle, createSubtitle);
-        titleBox.setSpacing(10);
-
-        // Velden aanmaken.
-        TextField firstnameField = new TextField();
-        TextField surnameField = new TextField();
-        TextField lastnameField = new TextField();
-        DatePicker dateOfBirthPicker = new DatePicker();
-
-        ComboBox<Object> genderBox = new ComboBox<>();
-        genderBox.getItems().addAll("Man", "Vrouw", "Anders");
-
-        TextField nationalityField = new TextField();
-        TextArea noteArea = new TextArea();
-
-        ComboBox<CriminalStatus> statusBox = new ComboBox<>();
-        statusBox.getItems().addAll(CriminalStatus.values());
-        statusBox.getSelectionModel().selectFirst();
-
-        TextField crimesField = new TextField();
-
-        Button imageButton = new Button("Select Image");
-        final String[] selectedImagePath = {null}; // Checkt welk bestand geselecteerd is.
-        Label imagePathLabel = new Label("No image selected");
-
-        // Actie toevoegen aan de image knop.
-        imageButton.setOnAction(_ -> {
-            FileChooserService fileChooserService = new FileChooserService();
-
-            // Opent de filechooser en geef het pad van geselecteerd bestand terug.
-            String path = fileChooserService.chooseImage(stage);
-
-            // Als er een pad is gevonden slaat die het bestand op en wordt het bestandsnaam weergegeven in de label.
-            if (path != null) {
-                selectedImagePath[0] = path;
-                imagePathLabel.setText(new File(path).getName());
-            }
-        });
-
-        // Image knop en label toevoegen aan box.
-        VBox imageBox = new VBox(imageButton, imagePathLabel);
-        imageBox.setSpacing(5);
-        imageBox.setPadding(new Insets(15, 0, 15, 0));
-
-        // Knop voor het opslaan maken.
-        Button saveButton = new Button("Opslaan");
-        saveButton.getStyleClass().add("form-button");
-
-        // Actie toevoegen aan de opslaan knop.
-        saveButton.setOnAction(_ -> {
-            CreateCriminalController createCriminalController = new CreateCriminalController();
-
-            createCriminalController.createCriminal(
-                    firstnameField.getText(),
-                    surnameField.getText(),
-                    lastnameField.getText(),
-                    dateOfBirthPicker.getValue(),
-                    (String) genderBox.getValue(),
-                    nationalityField.getText(),
-                    noteArea.getText(),
-                    statusBox.getValue(),
-                    crimesField.getText(),
-                    selectedImagePath[0]
-            );
-
-            refreshCriminalList(); // Opnieuw de lijst inladen.
-            stage.close(); // Sluit de form
-        });
-
-        // Alle onderdelen toevoegen aan de root.
-        root.getChildren().addAll(
-                titleBox,
-                new Label("Voornaam: *"), firstnameField,
-                new Label("Tussenvoegsel:"), surnameField,
-                new Label("Achternaam: *"), lastnameField,
-                new Label("Geboortedatum: *"), dateOfBirthPicker,
-                new Label("Geslacht: *"), genderBox,
-                new Label("Nationaliteit: *"), nationalityField,
-                new Label("Notities: *"), noteArea,
-                new Label("Status: *"), statusBox,
-                new Label("Misdrijven (Gescheiden door komma): *"), crimesField,
-                imageBox,
-                saveButton
-        );
-
-        stage.show();
-    }
-
     private void refreshCriminalList() {
         criminalTableContainer.getChildren().clear(); // Alles leeg maken.
 
@@ -469,6 +359,11 @@ public class DashboardView extends BorderPane {
 
             Button editButton = new Button("", editIcon); // Alleen het icoontje tonen.
             editButton.setMaxWidth(35);
+
+            // Actie toevoegen aan de edit knop.
+            editButton.setOnAction(_ -> {
+                editCriminalForm(criminal); // Opent de bewerken form.
+            });
 
             // Delete icon maken.
             ImageView deleteIcon = new ImageView(
@@ -568,6 +463,254 @@ public class DashboardView extends BorderPane {
 
             overviewBox.getChildren().add(reportBox);
         }
+    }
+
+    private void createCriminalForm() {
+
+        // Node aanmaken.
+        VBox root = new  VBox(5);
+        root.setPadding(new Insets(20));
+
+        // Nieuwe stage aanmaken om een soort modal te krijgen.
+        Stage stage = new Stage();
+        stage.setResizable(false);
+        Scene scene = new Scene(root, 800, 800);
+        stage.setScene(scene);
+        scene.getStylesheets().add(
+                Application.class.getResource("css/admin/dashboard.css").toString()
+        );
+
+        // Form titel maken.
+        Label createTitle = new Label("Persoon toevoegen");
+        createTitle.getStyleClass().add("form-title");
+
+        // Form subtitel maken.
+        Label createSubtitle = new Label("Maak hier een crimineel aan om toe te voegen");
+        createSubtitle.getStyleClass().add("form-subtitle");
+
+        VBox titleBox = new VBox(createTitle, createSubtitle);
+        titleBox.setSpacing(10);
+
+        // Velden aanmaken.
+        TextField firstnameField = new TextField();
+        TextField surnameField = new TextField();
+        TextField lastnameField = new TextField();
+        DatePicker dateOfBirthPicker = new DatePicker();
+
+        ComboBox<Object> genderBox = new ComboBox<>();
+        genderBox.getItems().addAll("Man", "Vrouw", "Anders");
+
+        TextField nationalityField = new TextField();
+        TextArea noteArea = new TextArea();
+
+        ComboBox<CriminalStatus> statusBox = new ComboBox<>();
+        statusBox.getItems().addAll(CriminalStatus.values());
+        statusBox.getSelectionModel().selectFirst();
+
+        TextField crimesField = new TextField();
+
+        Button imageButton = new Button("Selecteer Foto");
+        final String[] selectedImagePath = { null }; // Checkt welk bestand geselecteerd is.
+        Label imagePathLabel = new Label("Geen foto geselecteerd");
+
+        // Actie toevoegen aan de image knop.
+        imageButton.setOnAction(_ -> {
+            FileChooserService fileChooserService = new FileChooserService();
+
+            // Opent de filechooser en geef het pad van geselecteerd bestand terug.
+            String path = fileChooserService.chooseImage(stage);
+
+            // Als er een pad is gevonden slaat die het bestand op en wordt het bestandsnaam weergegeven in de label.
+            if (path != null) {
+                selectedImagePath[0] = path;
+                imagePathLabel.setText(new File(path).getName());
+            }
+        });
+
+        // Image knop en label toevoegen aan box.
+        VBox imageBox = new VBox(imageButton, imagePathLabel);
+        imageBox.setSpacing(5);
+        imageBox.setPadding(new Insets(15, 0, 15, 0));
+
+        // Knop voor het opslaan maken.
+        Button saveButton = new Button("Opslaan");
+        saveButton.getStyleClass().add("form-button");
+
+        // Actie toevoegen aan de opslaan knop.
+        saveButton.setOnAction(_ -> {
+            CreateCriminalController createCriminalController = new CreateCriminalController();
+
+            // Er wordt een nieuw crimineel aangemaakt via de createController.
+            createCriminalController.createCriminal(
+                    firstnameField.getText(),
+                    surnameField.getText(),
+                    lastnameField.getText(),
+                    dateOfBirthPicker.getValue(),
+                    (String) genderBox.getValue(),
+                    nationalityField.getText(),
+                    noteArea.getText(),
+                    statusBox.getValue(),
+                    crimesField.getText(),
+                    selectedImagePath[0]
+            );
+
+            refreshCriminalList(); // Opnieuw de lijst inladen.
+            stage.close(); // Sluit de form
+        });
+
+        // Alle onderdelen toevoegen aan de root.
+        root.getChildren().addAll(
+                titleBox,
+                new Label("Voornaam: *"), firstnameField,
+                new Label("Tussenvoegsel:"), surnameField,
+                new Label("Achternaam: *"), lastnameField,
+                new Label("Geboortedatum: *"), dateOfBirthPicker,
+                new Label("Geslacht: *"), genderBox,
+                new Label("Nationaliteit: *"), nationalityField,
+                new Label("Notities: *"), noteArea,
+                new Label("Status: *"), statusBox,
+                new Label("Misdrijven (Gescheiden door komma): *"), crimesField,
+                imageBox,
+                saveButton
+        );
+
+        stage.show();
+    }
+
+    private void editCriminalForm(Criminal criminal) {
+
+        // Node aanmaken.
+        VBox root = new  VBox(5);
+        root.setPadding(new Insets(20));
+
+        // Nieuwe stage aanmaken om een soort modal te krijgen.
+        Stage stage = new Stage();
+        stage.setResizable(false);
+        Scene scene = new Scene(root, 800, 800);
+        stage.setScene(scene);
+        scene.getStylesheets().add(
+                Application.class.getResource("css/admin/dashboard.css").toString()
+        );
+
+        // Form titel maken.
+        Label createTitle = new Label("Persoon Bewerken");
+        createTitle.getStyleClass().add("form-title");
+
+        // Form subtitel maken.
+        Label createSubtitle = new Label("Verander hier de gegevens van de crimineel.");
+        createSubtitle.getStyleClass().add("form-subtitle");
+
+        VBox titleBox = new VBox(createTitle, createSubtitle);
+        titleBox.setSpacing(10);
+
+        // Velden aanmaken.
+        TextField firstnameField = new TextField();
+        firstnameField.setText(criminal.getFirstname());
+
+        TextField surnameField = new TextField();
+        surnameField.setText(criminal.getSurname());
+
+        TextField lastnameField = new TextField();
+        lastnameField.setText(criminal.getLastname());
+
+        DatePicker dateOfBirthPicker = new DatePicker();
+        dateOfBirthPicker.setValue(criminal.getDateOfBirth());
+
+        ComboBox<Object> genderBox = new ComboBox<>();
+        genderBox.getItems().addAll("Man", "Vrouw", "Anders");
+        genderBox.setValue(criminal.getGender());
+
+        TextField nationalityField = new TextField();
+        nationalityField.setText(criminal.getNationality());
+
+        TextArea noteArea = new TextArea();
+        noteArea.setText(criminal.getNotes());
+
+        ComboBox<CriminalStatus> statusBox = new ComboBox<>();
+        statusBox.getItems().addAll(CriminalStatus.values());
+        statusBox.getSelectionModel().select(criminal.getCriminalStatus());
+
+        TextField crimesField = new TextField();
+        crimesField.setText(criminal.getCrimes());
+
+        Button imageButton = new Button("Selecteer Foto");
+        final String[] selectedImagePath = { criminal.getImageLink() }; // Checkt welk bestand geselecteerd is.
+        Label imagePathLabel = new Label();
+
+        // Als er een image is gevonden, wordt die opgehaald.
+        if (criminal.getImageLink() != null) {
+            imagePathLabel.setText(new File(criminal.getImageLink()).getName());
+        } else {
+            imagePathLabel.setText("Geen foto geselecteerd.");
+        }
+
+        // Actie toevoegen aan de image knop.
+        imageButton.setOnAction(_ -> {
+            FileChooserService fileChooserService = new FileChooserService();
+
+            // Opent de filechooser en geef het pad van geselecteerd bestand terug.
+            String path = fileChooserService.chooseImage(stage);
+
+            // Als er een pad is gevonden slaat die het bestand op en wordt het bestandsnaam weergegeven in de label.
+            if (path != null) {
+                selectedImagePath[0] = path;
+                imagePathLabel.setText(new File(path).getName());
+            }
+        });
+
+        // Image knop en label toevoegen aan box.
+        VBox imageBox = new VBox(imageButton, imagePathLabel);
+        imageBox.setSpacing(5);
+        imageBox.setPadding(new Insets(15, 0, 15, 0));
+
+        // Knop voor het opslaan maken.
+        Button saveButton = new Button("Opslaan");
+        saveButton.getStyleClass().add("form-button");
+
+        // Actie toevoegen aan de opslaan knop.
+        saveButton.setOnAction(_ -> {
+
+            EditCriminalController editCriminalController = new EditCriminalController();
+
+            // Er wordt een nieuw object aangemaakt.
+                Criminal updatedCriminal = new Criminal(
+                        criminal.getId(),
+                        firstnameField.getText(),
+                        surnameField.getText(),
+                        lastnameField.getText(),
+                        dateOfBirthPicker.getValue(),
+                        (String) genderBox.getValue(),
+                        nationalityField.getText(),
+                        statusBox.getValue(),
+                        noteArea.getText(),
+                        crimesField.getText(),
+                        selectedImagePath[0]
+                );
+
+                // Crimineel wordt bewerkt via de editController.
+                editCriminalController.updateCriminal(updatedCriminal);
+
+                refreshCriminalList(); // Laadt opnieuw de lijst met crimineel in.
+                stage.close(); // Sluit de form.
+        });
+
+        // Alle onderdelen toevoegen aan de root.
+        root.getChildren().addAll(
+                titleBox,
+                new Label("Voornaam: *"), firstnameField,
+                new Label("Tussenvoegsel:"), surnameField,
+                new Label("Achternaam: *"), lastnameField,
+                new Label("Geboortedatum: *"), dateOfBirthPicker,
+                new Label("Geslacht: *"), genderBox,
+                new Label("Nationaliteit: *"), nationalityField,
+                new Label("Notities: *"), noteArea,
+                new Label("Status: *"), statusBox,
+                new Label("Misdrijven (Gescheiden door komma): *"), crimesField,
+                imageBox,
+                saveButton
+        );
+
+        stage.show();
     }
 
     private void switchView(AdminViewType adminViewType) {

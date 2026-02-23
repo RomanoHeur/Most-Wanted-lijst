@@ -147,6 +147,36 @@ public class CriminalDao implements ICriminalDao {
     }
 
     /**
+     * Update een crimineel uit de database.
+     * @param newCriminal Het nieuwe object.
+     */
+    @Override
+    public void update(Criminal newCriminal) {
+        try {
+            PreparedStatement statement = connection.prepareStatement("UPDATE criminal c JOIN person p ON c.person_id = p.id SET p.firstname = ?, p.surname = ?, p.lastname = ?, p.date_of_birth = ?, p.gender = ?, p.nationality = ?, c.criminal_status = ?, c.notes = ?, c.crimes = ?, c.image_link = ? WHERE c.id = ?");
+
+            // Statements instellen.
+            statement.setString(1, newCriminal.getFirstname());
+            statement.setString(2, newCriminal.getSurname());
+            statement.setString(3, newCriminal.getLastname());
+            statement.setDate(4, Date.valueOf(newCriminal.getDateOfBirth()));
+            statement.setString(5, newCriminal.getGender());
+            statement.setString(6, newCriminal.getNationality());
+            statement.setString(7, newCriminal.getCriminalStatus().name());
+            statement.setString(8, newCriminal.getNotes());
+            statement.setString(9, newCriminal.getCrimes());
+            statement.setString(10, newCriminal.getImageLink());
+            statement.setInt(11, newCriminal.getId());
+
+            // Statement uitvoeren.
+            statement.executeUpdate();
+
+        } catch (SQLException exception) {
+            throw new IllegalStateException("Kon geen verbinding maken met de database", exception);
+        }
+    }
+
+    /**
      * Verwijdert crimineel uit database, op basis via de person. Dit komt door de DELETE CASCADE in de database.
      * @param personId ID van de persoon die verwijderd moet worden.
      */

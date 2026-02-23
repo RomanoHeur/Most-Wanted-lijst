@@ -12,5 +12,8 @@ public interface ICriminalDao {
 
     Criminal findById(int criminalId);
 
+    void update(Criminal newCriminal);
+
     void delete(int criminalId);
+
 }
