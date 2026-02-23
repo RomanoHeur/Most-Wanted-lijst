@@ -26,7 +26,7 @@ public class Application extends javafx.application.Application {
     }
 
     public static void main(String[] args) {
-        Application.launch(Application.class, args);
+        launch(args);
     }
 
     public static void setStage(Parent parent) {
