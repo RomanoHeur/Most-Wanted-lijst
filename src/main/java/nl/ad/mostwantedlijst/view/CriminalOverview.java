@@ -19,6 +19,8 @@ import nl.ad.mostwantedlijst.view.admin.LoginView;
  */
 public class CriminalOverview extends BorderPane {
 
+    private Button loginButton;
+
     public CriminalOverview() {
         initialize();
 
@@ -76,10 +78,12 @@ public class CriminalOverview extends BorderPane {
         titleBox.setPadding(new Insets(0, 0, 0, 5));
 
         // Login button maken.
-        Button loginButton = new Button("Login");
+        loginButton = new Button("Login");
         loginButton.getStyleClass().add("login-button");
         loginButton.setPadding(new Insets(6, 20, 6, 20));
         HBox.setMargin(loginButton, new Insets(10, 40, 0, 0)); // Zorgt ervoor dat er afstand zit tussen de header.
+        loginButton.setVisible(false); // Begint onzichtbaar.
+        loginButton.setManaged(false); // Zodat er geen ruimte wordt ingenomen.
 
         // Actie op de Login button om naar de login pagina te gaan.
         loginButton.setOnMouseClicked(_ -> {
@@ -279,6 +283,18 @@ public class CriminalOverview extends BorderPane {
         card.getChildren().addAll(imageContainer, infoBox);
 
         return card;
+    }
+
+    // Methode voor het aan of uit zetten van de login knop.
+    public void toggleLoginButton() {
+
+        // Checkt of de knop bestaat.
+        if (loginButton != null) {
+            boolean isVisible = loginButton.isVisible(); // Slaat huidige zichtbaarheid op
+
+            loginButton.setVisible(!isVisible); // Maakt hem zichtbaar als die is verborgen.
+            loginButton.setManaged(!isVisible); // Neemt weer ruimte in of niet, zodat er geen lege ruimte over blijft.
+        }
     }
 
 }
