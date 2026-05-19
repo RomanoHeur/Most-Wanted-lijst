@@ -64,6 +64,24 @@ mvn javafx:run
 
 ---
 
+## 🌐 Productieomgeving & Uitrol
+Productieomgeving
+De applicatie is ontwikkeld als JavaFX dekstopapplicatie en kan worden uitgerold binnen een beveiligde omgeving, zoals een politie of gemeentelijke netwerk.
+
+De productieomgeving bestaat uit:
+- Een centrale MySQL database server.
+- JDBC database verbindingen.
+
+# Uitrolstrategie
+De implementatie van het systeem verloopt in meerdere stappen:
+1. Installeren van MySQL Server
+2. Importeren van het SQL setup script.
+3. Het configureren van de database gegevens.
+4. Bouwen van het JAR-bestand
+5. Testen van de databaseconnectie
+
+---
+
 ## 🎯 Functionaliteiten
 👥 Publieke overzicht
 * Overzicht van alle gezochte personen
@@ -131,6 +149,27 @@ Het systeem wordt succesvol beschouwd wanneer:
 * Login Systeem correct functioneert
 * Shortcut werkt
 * Database verbinding stabiel is
+
+---
+
+## 📅 Implementatieplanning
+Week 1-3: Database ontwerp maken, dus de SQL script, connectie en al regelen. Ontwerp en ideeën opdoen hoe de applicatie er ongeveer uit moet komen te zien.
+Week 4-6: Beginnen aan de applicatie, dus denk hierbij aan de functionaliteitein maken. CRUD functionaileiten maken, de UI implementeren.
+week 6-8: Hierbij dan ook testen maken en uitvoeren, bugs oplossen als die er waren en de documentatie afronden.
+
+---
+
+## Evaluatie
+
+Na implementatie wordt het systeem geëvalueerd op:
+
+- Stabiliteit van de applicatie
+- Gebruiksvriendelijkheid
+- Databaseprestaties
+- Testresultaten
+- Eventuele bugs en verbeterpunten
+
+Verbeterpunten worden meegenomen in toekomstige versies van het systeem.
 
 ---
 
